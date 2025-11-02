@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Компактные стили для таблицы заказов */
+.compact-order-table {
+    font-size: 0.875rem;
+}
+
+.compact-order-table .table th,
+.compact-order-table .table td {
+    padding: 0.5rem 0.75rem;
+    line-height: 1.25;
+}
+
+.compact-order-table .client-cell {
+    white-space: pre-line;
+    font-size: 0.8rem;
+    line-height: 1.2;
+}
+
+.compact-order-table .status-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+}
+
+.compact-order-table .status-new {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.compact-order-table .status-in-progress {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.compact-order-table .status-completed {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.compact-order-table .status-canceled {
+    background-color: #fee2e2;
+    color: #991b1b;
+}

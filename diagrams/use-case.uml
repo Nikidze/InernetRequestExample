@@ -1,0 +1,49 @@
+@startuml
+' Задаем направление диаграммы для лучшей читаемости
+left to right direction
+
+' Определяем акторов (роли пользователей)
+actor "Коммерческий директор" as Director
+actor "Оператор" as Operator
+actor "Выездная бригада" as Brigade
+
+' Группируем варианты использования в прямоугольник "ИС Провайдера"
+rectangle "Информационная система" {
+  ' Варианты использования для Директора
+  usecase "Управлять тарифами" as UC_Tariffs
+  usecase "Управлять нас. пунктами" as UC_Settlements
+
+  ' Варианты использования для Оператора
+  usecase "Создать заявку" as UC_CreateApp
+  usecase "Просмотреть все заявки" as UC_ViewApps
+  usecase "Подтвердить заявку (перевод в 'В работе')" as UC_ConfirmApp
+
+  ' Варианты использования для Бригады
+  usecase "Просмотреть назначенные заявки" as UC_ViewWorkApps
+  usecase "Завершить заявку" as UC_CompleteApp
+}
+
+' Связываем акторов с их вариантами использования
+Director -- UC_Tariffs
+Director -- UC_Settlements
+
+Operator -- UC_CreateApp
+Operator -- UC_ViewApps
+Operator -- UC_ConfirmApp
+
+Brigade -- UC_ViewWorkApps
+Brigade -- UC_CompleteApp
+
+' Добавляем примечания для уточнений
+note right of UC_ViewWorkApps
+  Только заявки
+  в статусе "В работе"
+end note
+
+note top of Operator
+  Оператор выступает
+  интерфейсом для
+  потенциального абонента
+end note
+
+@enduml

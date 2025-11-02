@@ -1,0 +1,83 @@
+@startuml
+
+' Настройки для более приятного вида
+skinparam linetype ortho
+
+' Описание сущностей (таблиц)
+entity "Users" as users {
+  + id: int {PK}
+  --
+  name: varchar
+  email: varchar
+  email_verified_at: timestamp
+  password: varchar
+  remember_token: varchar
+  permissions: jsonb 'Права доступа пользователя'
+  --
+  created_at, updated_at
+}
+
+entity "Roles" as roles {
+  + id: int {PK}
+  --
+  slug: varchar 'Уникальный идентификатор (director, operator, brigade)'
+  name: varchar 'Название роли'
+  permissions: jsonb 'Права доступа в JSON формате'
+  --
+  created_at, updated_at
+}
+
+entity "Location" as locations {
+  + id: int {PK}
+  --
+  name: varchar
+  is_active: boolean 'Можно ли здесь подключать'
+  --
+  created_at, updated_at
+}
+
+entity "Tariffs" as tariffs {
+  + id: int {PK}
+  --
+  name: varchar
+  speed: int 'Скорость в Мбит/с'
+  price: decimal(10,2) 'Цена в рублях'
+  is_active: boolean 'Доступен ли тариф для выбора'
+  --
+  created_at, updated_at
+}
+
+entity "Orders" as orders {
+  + id: int {PK}
+  --
+  client_name: varchar
+  client_phone: varchar
+  address_full: text 'Полный адрес (улица, дом, квартира)'
+  status: varchar 'Статус (new, in_progress, completed, canceled)'
+  connection_time: timestamp 'Согласованное время'
+  --
+  location_id: int {FK}
+  tariff_id: int {FK}
+  operator_id: int {FK} 'ID оператора, создавшего заявку'
+  brigade_id: int {FK, Nullable} 'ID бригады, выполнившей заявку'
+  --
+  created_at, updated_at
+}
+
+entity "RoleUsers" as role_users {
+  + user_id: int {PK, FK}
+  + role_id: int {PK, FK}
+}
+
+' Описание связей между сущностями
+users        }o--|| role_users   : "имеет"
+role_users   }o--|| roles        : "принадлежит к"
+
+orders       }o--|| locations    : "относится к"
+orders       }o--|| tariffs      : "выбран"
+
+orders   }o--|| users : "создана (operator_id)"
+orders   }o..|| users : "выполнена (brigade_id)"
+' -------------------------
+
+@enduml

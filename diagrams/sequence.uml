@@ -1,0 +1,58 @@
+@startuml
+' Устанавливаем порядок участников
+participant "Потенциальный абонент" as Client
+participant "Оператор" as Operator
+participant "Система" as System
+participant "Бригада" as Brigade
+
+' Включаем автоматическую нумерацию шагов
+autonumber
+
+Client -> Operator: Звонит для подключения
+activate Operator
+
+Operator -> System: Заходит в раздел "Заявки"
+activate System
+System --> Operator: Отображает список заявок
+deactivate System
+
+Operator -> System: Нажимает "Создать заявку"
+activate System
+System --> Operator: Отображает форму создания
+
+Operator -> Operator: Заполняет данные (адрес, контакт,\nвыбирает тариф, согласует время)
+Operator -> System: Сохраняет новую заявку
+System -> System: Сохраняет в БД со статусом "Новая"
+System --> Operator: Подтверждает создание
+deactivate System
+
+... За некоторое время до выезда ...
+
+Operator -> Client: Звонит для подтверждения ("Вы дома?")
+activate Client
+Client --> Operator: "Да, я дома"
+deactivate Client
+
+Operator -> System: Находит заявку, меняет статус
+activate System
+System -> System: Устанавливает статус "В работе"
+System --> Operator: Подтверждает изменение
+deactivate System
+deactivate Operator
+
+Brigade -> System: Просматривает список заявок
+activate Brigade
+activate System
+System --> Brigade: Возвращает список заявок\n(только со статусом "В работе")
+deactivate System
+
+Brigade -> Brigade: Выполняет подключение у клиента
+
+Brigade -> System: Находит заявку, меняет статус
+activate System
+System -> System: Устанавливает статус "Завершена"
+System --> Brigade: Подтверждает изменение
+deactivate System
+deactivate Brigade
+
+@enduml
