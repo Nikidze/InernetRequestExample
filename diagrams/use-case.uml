@@ -3,7 +3,7 @@
 left to right direction
 
 ' Определяем акторов (роли пользователей)
-actor "Коммерческий директор" as Director
+actor "Директор" as Director
 actor "Оператор" as Operator
 actor "Выездная бригада" as Brigade
 
